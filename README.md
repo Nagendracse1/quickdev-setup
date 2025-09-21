@@ -218,8 +218,6 @@ MIT License - see [LICENSE](LICENSE) file for details.
 - 📚 Wiki: [Project Wiki](https://github.com/Nagendracse1/quickdev-setup/wiki)
 - 🐛 Bug Reports: Create detailed issues with reproduction steps
 - 💡 Feature Requests: Share your ideas for improvements
-- 👨‍💻 Developer: [Nagendra Kumar](https://github.com/Nagendracse1) - Backend Engineer
-- 📧 Contact: [nagendra.cse1@gmail.com](mailto:nagendra.cse1@gmail.com)
 
 ## 🙏 Credits
 
