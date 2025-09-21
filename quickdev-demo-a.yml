@@ -1,0 +1,133 @@
+# The configurations that used for the recording, feel free to edit them
+config:
+
+  # Specify a command to be executed
+  # like `/bin/bash -l`, `ls`, or any other commands
+  # the default is bash for Linux
+  # or powershell.exe for Windows
+  command: bash --noprofile --norc
+  
+  # Specify the current working directory path
+  # the default is the current working directory path
+  cwd: /Users/nagendrakumar/Documents
+  
+  # Export additional ENV variables
+  env:
+    recording: true
+  
+  # Explicitly set the number of columns
+  # or use `auto` to take the current
+  # number of columns of your shell
+  cols: 161
+  
+  # Explicitly set the number of rows
+  # or use `auto` to take the current
+  # number of rows of your shell
+  rows: 12
+  
+  # Amount of times to repeat GIF
+  # If value is -1, play once
+  # If value is 0, loop indefinitely
+  # If value is a positive number, loop n times
+  repeat: 0
+  
+  # Quality
+  # 1 - 100
+  quality: 100
+  
+  # Delay between frames in ms
+  # If the value is `auto` use the actual recording delays
+  frameDelay: auto
+  
+  # Maximum delay between frames in ms
+  # Ignored if the `frameDelay` isn't set to `auto`
+  # Set to `auto` to prevent limiting the max idle time
+  maxIdleTime: 2000
+  
+  # The surrounding frame box
+  # The `type` can be null, window, floating, or solid`
+  # To hide the title use the value null
+  # Don't forget to add a backgroundColor style with a null as type
+  frameBox:
+    type: floating
+    title: Terminalizer
+    style:
+      border: 0px black solid
+      # boxShadow: none
+      # margin: 0px
+  
+  # Add a watermark image to the rendered gif
+  # You need to specify an absolute path for
+  # the image on your machine or a URL, and you can also
+  # add your own CSS styles
+  watermark:
+    imagePath: null
+    style:
+      position: absolute
+      right: 15px
+      bottom: 15px
+      width: 100px
+      opacity: 0.9
+  
+  # Cursor style can be one of
+  # `block`, `underline`, or `bar`
+  cursorStyle: block
+  
+  # Font family
+  # You can use any font that is installed on your machine
+  # in CSS-like syntax
+  fontFamily: "Monaco, Lucida Console, Ubuntu Mono, Monospace"
+  
+  # The size of the font
+  fontSize: 12
+  
+  # The height of lines
+  lineHeight: 1
+  
+  # The spacing between letters
+  letterSpacing: 0
+  
+  # Theme
+  theme:
+    background: "transparent"
+    foreground: "#afafaf"
+    cursor: "#c7c7c7"
+    black: "#232628"
+    red: "#fc4384"
+    green: "#b3e33b"
+    yellow: "#ffa727"
+    blue: "#75dff2"
+    magenta: "#ae89fe"
+    cyan: "#708387"
+    white: "#d5d5d0"
+    brightBlack: "#626566"
+    brightRed: "#ff7fac"
+    brightGreen: "#c8ed71"
+    brightYellow: "#ebdf86"
+    brightBlue: "#75dff2"
+    brightMagenta: "#ae89fe"
+    brightCyan: "#b1c6ca"
+    brightWhite: "#f9f9f4"
+  
+# Records, feel free to edit them
+records:
+  - delay: 100
+    content: " "
+  - delay: 7657
+    content: "quickdev-setup\r\n"
+  - delay: 227
+    content: "\r\n"
+  - delay: 12
+    content: "\e[0;36mWelcome to QuickDev Setup!\e[0m\r\nThis script will help you set up your development environment step by step.\r\n\r\nDo you want to use the interactive menu? [Y/n]: "
+  - delay: 2821
+    content: 'y'
+  - delay: 516
+    content: "\r\n"
+  - delay: 10
+    content: "\e[3J\e[H\e[2J\e[1m\e[1;36m╔══════════════════════════════════════════════════════════╗\e[0m\r\n\e[1m\e[1;36m║\e[0m     \U0001F680 QuickDev Setup - Developer Environment \U0001F680\e[0m     \e[1m\e[1;36m║\e[0m\r\n\e[1m\e[1;36m╚══════════════════════════════════════════════════════════╝\e[0m\r\n\r\n\e[1;33m\U0001F4CB Select a setup category:\e[0m\r\n\e[1;34m1.\e[0m \U0001F37A \e[0;36mHomebrew Setup\e[0m\r\n\e[1;34m2.\e[0m \U0001F4BB \e[0;32mLanguage Runtimes\e[0m \e[0;90m(Node.js, Ruby, Go, Java, PHP)\e[0m\r\n\e[1;34m3.\e[0m \U0001F6E0️  \e[0;35mCLI Tools\e[0m \e[0;90m(git, docker, kubectl, etc.)\e[0m\r\n\e[1;34m4.\e[0m \U0001F4F1 \e[1;35mGUI Applications\e[0m \e[0;90m(VS Code, Chrome, etc.)\e[0m\r\n\e[1;34m5.\e[0m \U0001F41A \e[1;36mShell and AI Tools\e[0m\r\n\e[1;34m6.\e[0m \U0001F433 \e[0;34mDocker and Databases\e[0m\r\n\e[1;34m7.\e[0m \U0001F511 \e[0;33mGit Configuration\e[0m\r\n\e[1;34m8.\e[0m \U0001F680 \e[1;32mRun All Categories\e[0m\r\n\e[1;34m9.\e[0m \U0001F44B \e[0;31mExit\e[0m\r\nEnter your choice [1-9]: "
+  - delay: 2225
+    content: '9'
+  - delay: 314
+    content: "\r\n\e[0;32mGoodbye!\e[0m\r\nnagendrakumar-MacBook-Pro:Documents nagendrakumar$ "
+  - delay: 815
+    content: "logout\r\n"

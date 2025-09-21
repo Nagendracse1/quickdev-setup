@@ -1,0 +1,55 @@
+{
+  "name": "quickdev-setup",
+  "version": "1.0.0",
+  "description": "A comprehensive cross-platform developer environment setup tool with interactive menus and automated installation for programming languages, tools, and development stack. Currently supports macOS with Linux support coming soon.",
+  "keywords": [
+    "developer-environment",
+    "cross-platform",
+    "developer-tools",
+    "automation",
+    "setup-script",
+    "programming-languages",
+    "nodejs",
+    "docker",
+    "shell",
+    "git",
+    "cli-tools",
+    "macos",
+    "linux",
+    "devops",
+    "developer environment setup",
+    "quickdev setup",
+    "automated installation"
+  ],
+  "author": {
+    "name": "Nagendra Kumar",
+    "email": "nagendra.cse1@gmail.com",
+    "url": "https://github.com/Nagendracse1"
+  },
+  "maintainers": [
+    {
+      "name": "Nagendra Kumar",
+      "email": "nagendra.cse1@gmail.com"
+    }
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Nagendracse1/quickdev-setup.git"
+  },
+  "homepage": "https://github.com/Nagendracse1/quickdev-setup",
+  "bugs": {
+    "url": "https://github.com/Nagendracse1/quickdev-setup/issues"
+  },
+  "bin": {
+    "quickdev-setup": "./setup.sh"
+  },
+  "preferGlobal": true,
+  "os": ["darwin"],
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "categories": [
+    "Other"
+  ]
+}
