@@ -108,6 +108,28 @@ function add_zsh_plugin() {
         else
             echo -e "${C_GREEN}$plugin_name already in zsh plugins${C_NONE}"
         fi
+        
+        # Add manual source lines for immediate availability (fallback)
+        case "$plugin_name" in
+            "zsh-autosuggestions")
+                if ! grep -q "zsh-autosuggestions.zsh" "$zshrc_file"; then
+                    echo "" >> "$zshrc_file"
+                    echo "# zsh-autosuggestions plugin sourcing" >> "$zshrc_file"
+                    echo "if [ -f \"\${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh\" ]; then" >> "$zshrc_file"
+                    echo "    source \"\${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh\"" >> "$zshrc_file"
+                    echo "fi" >> "$zshrc_file"
+                fi
+                ;;
+            "zsh-syntax-highlighting")
+                if ! grep -q "zsh-syntax-highlighting.zsh" "$zshrc_file"; then
+                    echo "" >> "$zshrc_file"
+                    echo "# zsh-syntax-highlighting plugin sourcing" >> "$zshrc_file"
+                    echo "if [ -f \"\${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh\" ]; then" >> "$zshrc_file"
+                    echo "    source \"\${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh\"" >> "$zshrc_file"
+                    echo "fi" >> "$zshrc_file"
+                fi
+                ;;
+        esac
     else
         echo -e "${C_YELLOW}~/.zshrc not found, please add '$plugin_name' to plugins manually${C_NONE}"
     fi
@@ -342,6 +364,23 @@ function install_node() {
     local NODE_VERSION=$(prompt_for_version "Node.js" "20")
     run_with_retry "Installing Node.js $NODE_VERSION" nvm install $NODE_VERSION
     nvm alias default $NODE_VERSION
+    
+    # Install Yarn package manager
+    if command -v npm &> /dev/null; then
+        echo -e "${C_YELLOW}Installing Yarn package manager...${C_NONE}"
+        if run_with_retry "Installing Yarn globally" npm install -g yarn; then
+            echo -e "${C_GREEN}✅ Yarn installed successfully!${C_NONE}"
+            # Verify yarn installation
+            if command -v yarn &> /dev/null; then
+                local yarn_version=$(yarn --version 2>/dev/null)
+                echo -e "${C_CYAN}Yarn version: $yarn_version${C_NONE}"
+            fi
+        else
+            echo -e "${C_YELLOW}⚠️ Yarn installation failed, but Node.js is ready${C_NONE}"
+        fi
+    else
+        echo -e "${C_YELLOW}⚠️ npm not available, skipping Yarn installation${C_NONE}"
+    fi
 }
 
 function install_ruby() {
@@ -826,7 +865,7 @@ function setup_shell_and_ai_tools() {
     echo -e "${C_BRIGHT_CYAN}┌─────────────────────────────────────────┐${C_NONE}"
     echo -e "${C_BRIGHT_CYAN}│${C_NONE} 🐚 ${C_BRIGHT_WHITE}Setup Shell and AI Tools${C_NONE}           ${C_BRIGHT_CYAN}│${C_NONE}"
     echo -e "${C_BRIGHT_CYAN}└─────────────────────────────────────────┘${C_NONE}"
-    local shell_tools=("oh-my-zsh" "zsh-autosuggestions" "zsh-syntax-highlighting" "powerlevel10k" "claude-code")
+    local shell_tools=("oh-my-zsh" "zsh-autosuggestions" "zsh-syntax-highlighting" "powerlevel10k" "claude-code" "yarn")
     
     while true; do
         echo -e "\n${C_BRIGHT_YELLOW}🐚 Select a shell/AI tool to install:${C_NONE}"
@@ -891,6 +930,18 @@ function setup_shell_and_ai_tools() {
                         status="${C_GRAY}[${C_WHITE}not installed${C_GRAY}]${C_NONE}"
                     fi
                     ;;
+                "yarn")
+                    if command -v yarn &> /dev/null; then
+                        local yarn_version=$(yarn --version 2>/dev/null)
+                        if [[ -n "$yarn_version" ]]; then
+                            status="${C_BG_GREEN}${C_WHITE} 📦 ${C_NONE}${C_BRIGHT_BLUE} v${yarn_version}${C_NONE}"
+                        else
+                            status="${C_BG_GREEN}${C_WHITE} 📦 ${C_NONE}${C_BRIGHT_BLUE} installed${C_NONE}"
+                        fi
+                    else
+                        status="${C_GRAY}[${C_WHITE}not installed${C_GRAY}]${C_NONE}"
+                    fi
+                    ;;
             esac
             echo -e "${C_BRIGHT_BLUE}$((i+1)).${C_NONE} $tool $status"
         done
@@ -911,6 +962,12 @@ function setup_shell_and_ai_tools() {
                     local plugin_dir="${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions"
                     if [ -d "$plugin_dir" ]; then
                         echo -e "${C_GREEN}zsh-autosuggestions already installed${C_NONE}"
+                        # Check if it's activated, if not, offer to activate
+                        if ! grep -q "zsh-autosuggestions" ~/.zshrc 2>/dev/null; then
+                            echo -e "${C_YELLOW}Plugin is installed but not activated in ~/.zshrc${C_NONE}"
+                            add_zsh_plugin "zsh-autosuggestions"
+                            echo -e "${C_CYAN}✅ Plugin activated! Restart your terminal or run 'source ~/.zshrc'${C_NONE}"
+                        fi
                     else
                         # Remove if exists but corrupted
                         if [ -e "$plugin_dir" ]; then
@@ -920,6 +977,7 @@ function setup_shell_and_ai_tools() {
                         if run_with_retry "Installing zsh-autosuggestions plugin" git clone https://github.com/zsh-users/zsh-autosuggestions "$plugin_dir"; then
                             echo -e "${C_GREEN}zsh-autosuggestions installed successfully!${C_NONE}"
                             add_zsh_plugin "zsh-autosuggestions"
+                            echo -e "${C_CYAN}✅ Plugin activated! Restart your terminal or run 'source ~/.zshrc'${C_NONE}"
                         fi
                     fi
                     ;;
@@ -927,6 +985,12 @@ function setup_shell_and_ai_tools() {
                     local plugin_dir="${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting"
                     if [ -d "$plugin_dir" ]; then
                         echo -e "${C_GREEN}zsh-syntax-highlighting already installed${C_NONE}"
+                        # Check if it's activated, if not, offer to activate
+                        if ! grep -q "zsh-syntax-highlighting" ~/.zshrc 2>/dev/null; then
+                            echo -e "${C_YELLOW}Plugin is installed but not activated in ~/.zshrc${C_NONE}"
+                            add_zsh_plugin "zsh-syntax-highlighting"
+                            echo -e "${C_CYAN}✅ Plugin activated! Restart your terminal or run 'source ~/.zshrc'${C_NONE}"
+                        fi
                     else
                         # Remove if exists but corrupted
                         if [ -e "$plugin_dir" ]; then
@@ -936,6 +1000,7 @@ function setup_shell_and_ai_tools() {
                         if run_with_retry "Installing zsh-syntax-highlighting plugin" git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$plugin_dir"; then
                             echo -e "${C_GREEN}zsh-syntax-highlighting installed successfully!${C_NONE}"
                             add_zsh_plugin "zsh-syntax-highlighting"
+                            echo -e "${C_CYAN}✅ Plugin activated! Restart your terminal or run 'source ~/.zshrc'${C_NONE}"
                         fi
                     fi
                     ;;
@@ -1020,6 +1085,31 @@ function setup_shell_and_ai_tools() {
                             fi
                         else
                             echo -e "${C_RED}npm not found. Please install Node.js first in the Language Runtimes section.${C_NONE}"
+                        fi
+                    fi
+                    ;;
+                "yarn")
+                    if command -v yarn &> /dev/null; then
+                        local yarn_version=$(yarn --version 2>/dev/null)
+                        echo -e "${C_GREEN}Yarn already installed (v${yarn_version})${C_NONE}"
+                    else
+                        if command -v npm &> /dev/null; then
+                            if run_with_retry "Installing Yarn package manager" npm install -g yarn; then
+                                echo -e "${C_GREEN}✅ Yarn installed successfully!${C_NONE}"
+                                local yarn_version=$(yarn --version 2>/dev/null)
+                                echo -e "${C_CYAN}Yarn version: ${yarn_version}${C_NONE}"
+                                echo -e "${C_YELLOW}📦 You can now use 'yarn' commands for package management${C_NONE}"
+                                echo -e "${C_CYAN}Usage examples:${C_NONE}"
+                                echo "  yarn install          # Install dependencies"
+                                echo "  yarn add <package>     # Add a package"
+                                echo "  yarn build            # Build project"
+                                echo "  yarn start            # Start development server"
+                            else
+                                echo -e "${C_RED}❌ Failed to install Yarn${C_NONE}"
+                            fi
+                        else
+                            echo -e "${C_RED}npm not found. Please install Node.js first in the Language Runtimes section.${C_NONE}"
+                            echo -e "${C_YELLOW}💡 Node.js installation includes npm, which is required for Yarn${C_NONE}"
                         fi
                     fi
                     ;;

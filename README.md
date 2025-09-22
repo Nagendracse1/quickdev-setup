@@ -123,7 +123,7 @@ quickdev-setup --brew --languages --git
 ## 🎯 What Gets Installed
 
 ### Language Runtimes
-- **Node.js** via NVM with version selection
+- **Node.js** via NVM with version selection (includes Yarn package manager)
 - **Ruby** via rbenv with version selection
 - **Go** with latest or specific versions
 - **Java** OpenJDK with version selection  
@@ -143,8 +143,9 @@ quickdev-setup --brew --languages --git
 ### Shell Enhancement
 - Oh My Zsh framework
 - Powerlevel10k theme with auto-configuration
-- Zsh autosuggestions and syntax highlighting
+- Zsh autosuggestions and syntax highlighting (properly configured for immediate use)
 - Claude AI CLI tool
+- Yarn package manager (alternative to npm)
 
 ### Docker Services
 - MongoDB, Redis, PostgreSQL containers
