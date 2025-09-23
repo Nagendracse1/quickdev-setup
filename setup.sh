@@ -587,7 +587,7 @@ function install_cli_tools() {
     echo -e "${C_BRIGHT_PURPLE}└─────────────────────────────────────────┘${C_NONE}"
     
     # CLI Tools Section - using individual variables for better compatibility
-    local cli_tools=(git kubectl colima docker docker-compose gh terraform aws-cli mongosh mongodb/brew/database-tools)
+    local cli_tools=(git kubectl colima docker docker-compose gh terraform aws-cli mongosh mongodb-database-tools redis)
     local cli_status=""
     
     while true; do
@@ -695,7 +695,7 @@ function install_cli_tools() {
                         status="${C_GRAY} 🍃 ${C_WHITE}not installed${C_NONE}"
                     fi
                     ;;
-                "mongodb/brew/database-tools")
+                "mongodb-database-tools")
                     if command -v mongodump &> /dev/null; then
                         local tools_version=$(mongodump --version 2>/dev/null | head -n1 | grep -o 'v[0-9]\+\.[0-9]\+\.[0-9]\+' | head -n1)
                         if [[ -n "$tools_version" ]]; then
@@ -705,6 +705,18 @@ function install_cli_tools() {
                         fi
                     else
                         status="${C_GRAY} 🛠️ ${C_WHITE}not installed${C_NONE}"
+                    fi
+                    ;;
+                "redis")
+                    if command -v redis-cli &> /dev/null; then
+                        local redis_version=$(redis-cli --version 2>/dev/null | grep -o '[0-9]\+\.[0-9]\+\.[0-9]\+' | head -n1)
+                        if [[ -n "$redis_version" ]]; then
+                            status="${C_BG_GREEN}${C_WHITE} 🔴 ${C_NONE} ${C_BRIGHT_RED}v${redis_version}${C_NONE}"
+                        else
+                            status="${C_BG_GREEN}${C_WHITE} 🔴 ${C_NONE} ${C_BRIGHT_GREEN}installed${C_NONE}"
+                        fi
+                    else
+                        status="${C_GRAY} 🔴 ${C_WHITE}not installed${C_NONE}"
                     fi
                     ;;
                 *)
@@ -724,7 +736,7 @@ function install_cli_tools() {
             local tool=${cli_tools[$((choice-1))]}
             
             # Special handling for MongoDB database tools
-            if [[ "$tool" == "mongodb/brew/database-tools" ]]; then
+            if [[ "$tool" == "mongodb-database-tools" ]]; then
                 if command -v mongodump &> /dev/null; then
                     echo -e "${C_GREEN}MongoDB database tools are already installed.${C_NONE}"
                 else
@@ -732,6 +744,37 @@ function install_cli_tools() {
                     if run_with_retry "Adding MongoDB tap" brew tap mongodb/brew && \
                        run_with_retry "Installing MongoDB database tools" brew install mongodb/brew/mongodb-database-tools; then
                         echo -e "${C_GREEN}MongoDB database tools installed successfully!${C_NONE}"
+                        echo -e "${C_CYAN}Available MongoDB tools:${C_NONE}"
+                        echo "  • mongodump - Export MongoDB data"
+                        echo "  • mongorestore - Import MongoDB data"
+                        echo "  • mongoexport - Export data to JSON/CSV"
+                        echo "  • mongoimport - Import data from JSON/CSV"
+                        echo "  • mongostat - MongoDB statistics"
+                        echo "  • mongotop - MongoDB top command"
+                    fi
+                fi
+            # Special handling for Redis CLI
+            elif [[ "$tool" == "redis" ]]; then
+                if command -v redis-cli &> /dev/null; then
+                    local redis_version=$(redis-cli --version 2>/dev/null | grep -o '[0-9]\+\.[0-9]\+\.[0-9]\+' | head -n1)
+                    echo -e "${C_GREEN}Redis CLI is already installed (v${redis_version}).${C_NONE}"
+                else
+                    if run_with_retry "Installing Redis CLI and server" brew install redis; then
+                        echo -e "${C_GREEN}✅ Redis installed successfully!${C_NONE}"
+                        local redis_version=$(redis-cli --version 2>/dev/null | grep -o '[0-9]\+\.[0-9]\+\.[0-9]\+' | head -n1)
+                        echo -e "${C_CYAN}Redis version: ${redis_version}${C_NONE}"
+                        echo -e "${C_YELLOW}🔴 Redis CLI commands available:${C_NONE}"
+                        echo -e "${C_CYAN}Usage examples:${C_NONE}"
+                        echo "  redis-cli                    # Connect to local Redis"
+                        echo "  redis-cli -h host -p port    # Connect to remote Redis"
+                        echo "  redis-cli ping               # Test connection"
+                        echo "  redis-cli info               # Server information"
+                        echo "  redis-cli monitor            # Monitor commands"
+                        echo ""
+                        echo -e "${C_YELLOW}📋 Redis server controls:${C_NONE}"
+                        echo "  brew services start redis   # Start Redis server"
+                        echo "  brew services stop redis    # Stop Redis server"
+                        echo "  brew services restart redis # Restart Redis server"
                     fi
                 fi
             elif brew list "$tool" &> /dev/null 2>&1; then

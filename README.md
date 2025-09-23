@@ -84,7 +84,7 @@ brew untap Nagendracse1/quickdev-setup
 - **🐧 Linux Support**: Coming soon (Ubuntu, CentOS, RHEL planned)
 - **🍺 Package Managers**: Homebrew for macOS (APT/YUM planned for Linux)
 - **💻 Language Runtimes**: Node.js, Ruby, Go, Java, PHP with version management
-- **🛠️ CLI Tools**: Git, Docker, Kubectl, Terraform, AWS CLI, MongoDB tools
+- **🛠️ CLI Tools**: Git, Docker, Kubectl, Terraform, AWS CLI, MongoDB tools, Redis CLI
 - **📱 GUI Applications**: VS Code, Chrome, Slack, Discord, etc.
 - **🐚 Shell Enhancement**: Oh My Zsh, Powerlevel10k, plugins
 - **🐳 Docker & Databases**: MongoDB, Redis, PostgreSQL, Kafka, Google Cloud emulators
@@ -132,7 +132,8 @@ quickdev-setup --brew --languages --git
 ### CLI Tools
 - Git, GitHub CLI, Docker, Docker Compose
 - Kubernetes (kubectl), Terraform, AWS CLI
-- MongoDB shell and database tools
+- MongoDB shell (mongosh) and database tools (mongodump, mongorestore, etc.)
+- Redis CLI for Redis database operations
 - Colima (Docker Desktop alternative)
 
 ### GUI Applications  
