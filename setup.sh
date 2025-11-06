@@ -929,7 +929,8 @@ function setup_shell_and_ai_tools() {
                     fi
                     ;;
                 "zsh-autosuggestions")
-                    if [ -d "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions" ]; then
+                    local plugin_path="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions"
+                    if [ -d "$plugin_path" ] && [ -f "$plugin_path/zsh-autosuggestions.zsh" ]; then
                         if grep -q "zsh-autosuggestions" ~/.zshrc 2>/dev/null; then
                             status="${C_BG_GREEN}${C_WHITE} ⚡ ${C_NONE}${C_BRIGHT_GREEN} active${C_NONE}"
                         else
@@ -940,7 +941,8 @@ function setup_shell_and_ai_tools() {
                     fi
                     ;;
                 "zsh-syntax-highlighting")
-                    if [ -d "${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting" ]; then
+                    local plugin_path="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting"
+                    if [ -d "$plugin_path" ] && [ -f "$plugin_path/zsh-syntax-highlighting.zsh" ]; then
                         if grep -q "zsh-syntax-highlighting" ~/.zshrc 2>/dev/null; then
                             status="${C_BG_GREEN}${C_WHITE} 🎨 ${C_NONE}${C_BRIGHT_GREEN} active${C_NONE}"
                         else
@@ -1002,14 +1004,23 @@ function setup_shell_and_ai_tools() {
                     fi
                     ;;
                 "zsh-autosuggestions")
-                    local plugin_dir="${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions"
-                    if [ -d "$plugin_dir" ]; then
+                    # Check if Oh My Zsh is installed first
+                    if [ ! -d "$HOME/.oh-my-zsh" ]; then
+                        echo -e "${C_RED}❌ Oh My Zsh is required for zsh-autosuggestions${C_NONE}"
+                        echo -e "${C_YELLOW}Please install Oh My Zsh first (option 1 in this menu)${C_NONE}"
+                        continue
+                    fi
+                    
+                    local plugin_dir="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions"
+                    if [ -d "$plugin_dir" ] && [ -f "$plugin_dir/zsh-autosuggestions.zsh" ]; then
                         echo -e "${C_GREEN}zsh-autosuggestions already installed${C_NONE}"
                         # Check if it's activated, if not, offer to activate
                         if ! grep -q "zsh-autosuggestions" ~/.zshrc 2>/dev/null; then
                             echo -e "${C_YELLOW}Plugin is installed but not activated in ~/.zshrc${C_NONE}"
                             add_zsh_plugin "zsh-autosuggestions"
                             echo -e "${C_CYAN}✅ Plugin activated! Restart your terminal or run 'source ~/.zshrc'${C_NONE}"
+                        else
+                            echo -e "${C_GREEN}✅ Plugin is already active!${C_NONE}"
                         fi
                     else
                         # Remove if exists but corrupted
@@ -1017,22 +1028,37 @@ function setup_shell_and_ai_tools() {
                             echo -e "${C_YELLOW}Removing corrupted installation...${C_NONE}"
                             rm -rf "$plugin_dir"
                         fi
+                        
+                        # Ensure the plugins directory exists
+                        mkdir -p "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins"
+                        
                         if run_with_retry "Installing zsh-autosuggestions plugin" git clone https://github.com/zsh-users/zsh-autosuggestions "$plugin_dir"; then
                             echo -e "${C_GREEN}zsh-autosuggestions installed successfully!${C_NONE}"
                             add_zsh_plugin "zsh-autosuggestions"
                             echo -e "${C_CYAN}✅ Plugin activated! Restart your terminal or run 'source ~/.zshrc'${C_NONE}"
+                        else
+                            echo -e "${C_RED}❌ Failed to install zsh-autosuggestions${C_NONE}"
                         fi
                     fi
                     ;;
                 "zsh-syntax-highlighting")
-                    local plugin_dir="${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting"
-                    if [ -d "$plugin_dir" ]; then
+                    # Check if Oh My Zsh is installed first
+                    if [ ! -d "$HOME/.oh-my-zsh" ]; then
+                        echo -e "${C_RED}❌ Oh My Zsh is required for zsh-syntax-highlighting${C_NONE}"
+                        echo -e "${C_YELLOW}Please install Oh My Zsh first (option 1 in this menu)${C_NONE}"
+                        continue
+                    fi
+                    
+                    local plugin_dir="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting"
+                    if [ -d "$plugin_dir" ] && [ -f "$plugin_dir/zsh-syntax-highlighting.zsh" ]; then
                         echo -e "${C_GREEN}zsh-syntax-highlighting already installed${C_NONE}"
                         # Check if it's activated, if not, offer to activate
                         if ! grep -q "zsh-syntax-highlighting" ~/.zshrc 2>/dev/null; then
                             echo -e "${C_YELLOW}Plugin is installed but not activated in ~/.zshrc${C_NONE}"
                             add_zsh_plugin "zsh-syntax-highlighting"
                             echo -e "${C_CYAN}✅ Plugin activated! Restart your terminal or run 'source ~/.zshrc'${C_NONE}"
+                        else
+                            echo -e "${C_GREEN}✅ Plugin is already active!${C_NONE}"
                         fi
                     else
                         # Remove if exists but corrupted
@@ -1040,10 +1066,16 @@ function setup_shell_and_ai_tools() {
                             echo -e "${C_YELLOW}Removing corrupted installation...${C_NONE}"
                             rm -rf "$plugin_dir"
                         fi
+                        
+                        # Ensure the plugins directory exists
+                        mkdir -p "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins"
+                        
                         if run_with_retry "Installing zsh-syntax-highlighting plugin" git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$plugin_dir"; then
                             echo -e "${C_GREEN}zsh-syntax-highlighting installed successfully!${C_NONE}"
                             add_zsh_plugin "zsh-syntax-highlighting"
                             echo -e "${C_CYAN}✅ Plugin activated! Restart your terminal or run 'source ~/.zshrc'${C_NONE}"
+                        else
+                            echo -e "${C_RED}❌ Failed to install zsh-syntax-highlighting${C_NONE}"
                         fi
                     fi
                     ;;
