@@ -224,6 +224,36 @@ MIT License - see [LICENSE](LICENSE) file for details.
 ## 🙏 Credits
 
 **Developed by:** [Nagendra Kumar](https://github.com/Nagendracse1)   
-**Development:** Created with AI assistance to streamline developer onboarding and environment setup
+**Development:** Created with AI assistance to streamline developer onboarding and 
+
+## 🤝 How to Contribute
+
+We welcome contributions from the community! Whether you're interested in adding new features, fixing bugs, improving documentation, or bringing Linux/Windows support, there's a place for you here.
+
+### Getting Started
+
+1. **Read the [CONTRIBUTING.md](./CONTRIBUTING.md)** - Contains setup instructions, code style guidelines, and the contribution workflow
+2. **Check [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md)** - Understand our community standards
+3. **Look at [open issues](https://github.com/Nagendracse1/quickdev-setup/issues)** - Find tasks labeled `good first issue` or `help wanted`
+
+### Ways to Contribute
+
+- 🐛 **Report bugs** - Found an issue? Open a bug report with steps to reproduce
+- ✨ **Suggest features** - Have an idea? Share it in a feature request
+- 📚 **Improve docs** - Help us make documentation clearer and more complete
+- 🔧 **Code contributions** - Add new tools, fix bugs, or refactor code
+- 🐧 **Linux support** - Help bring QuickDev Setup to Linux (Ubuntu, CentOS, RHEL)
+- 🪟 **Windows exploration** - Interested in Windows support? Let's discuss!
+
+### Quick Links
+
+- [Contributing Guide](./CONTRIBUTING.md)
+- [GitHub Issues](https://github.com/Nagendracse1/quickdev-setup/issues)
+- [GitHub Discussions](https://github.com/Nagendracse1/quickdev-setup/discussions)
+- [Project Roadmap](./README.md#-roadmap)
+
+---
+
+**Questions?** Start a [discussion](https://github.com/Nagendracse1/quickdev-setup/discussions) or open an [issue](https://github.com/Nagendracse1/quickdev-setup/issues)!environment setup
 
 Created to streamline developer onboarding and environment setup for macOS developers, with cross-platform support planned for the global developer community.
