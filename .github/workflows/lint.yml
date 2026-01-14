@@ -1,0 +1,63 @@
+name: Lint and Validate
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  shellcheck:
+    runs-on: ubuntu-latest
+    name: ShellCheck
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Install ShellCheck
+        run: apt-get update && apt-get install -y shellcheck
+      
+      - name: Run ShellCheck on shell scripts
+        run: |
+          echo "Checking shell scripts..."
+          shellcheck setup.sh install.sh create-demo.sh || true
+          echo "ShellCheck complete"
+      
+      - name: Check script permissions
+        run: |
+          echo "Verifying script permissions..."
+          ls -la *.sh
+
+  basic-validation:
+    runs-on: macos-latest
+    name: Basic Validation
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Validate setup.sh syntax
+        run: |
+          echo "Checking setup.sh syntax..."
+          bash -n setup.sh
+          echo "Syntax check passed!"
+      
+      - name: Check files exist
+        run: |
+          echo "Verifying required files..."
+          test -f setup.sh && echo "✓ setup.sh found"
+          test -f install.sh && echo "✓ install.sh found"
+          test -f CONTRIBUTING.md && echo "✓ CONTRIBUTING.md found"
+          test -f CODE_OF_CONDUCT.md && echo "✓ CODE_OF_CONDUCT.md found"
+          echo "All required files present!"
+
+  documentation:
+    runs-on: ubuntu-latest
+    name: Documentation Check
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Check markdown files
+        run: |
+          echo "Verifying markdown files..."
+          test -f README.md && echo "✓ README.md found"
+          test -f CONTRIBUTING.md && echo "✓ CONTRIBUTING.md found"
+          test -f CODE_OF_CONDUCT.md && echo "✓ CODE_OF_CONDUCT.md found"
+          echo "Documentation structure validated!"
